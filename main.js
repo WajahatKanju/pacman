@@ -30,6 +30,7 @@ class Pacman {
     this.increase_velocity = increase_velocity;
   }
   draw() {
+		context.save();
 		context.beginPath();
 		context.moveTo(this.x, this.y);
     context.arc(this.x, this.y, this.radius, this.startAngle, this.endAngle);
@@ -69,15 +70,35 @@ const animate = () => {
 };
 
 const generateRandom = (min, max) => Math.random() * (max - min + 1) + min;
+const gap = (x1, x2, y1, y2) => Math.sqrt(Math.pow(x2 - x1,2) + Math.pow(y2-y1,2));
 
 const init = () => {
   for (let i = 0; i < 25; i++) {
-    let radius = generateRandom(10, 30);
-    let x = generateRandom(radius, canvas.width - radius);
-    let y = generateRandom(radius, canvas.height - radius);
-    pacmanArray.push(new Pacman(x, y, radius));
+		let radius;
+		let x;
+		let y;
+
+		const getNew = () => {
+			radius = generateRandom(10, 30);
+			x = generateRandom(radius, canvas.width - radius);
+			y = generateRandom(radius, canvas.height - radius);
+		}
+		getNew();
+		
+		if(i !== 0){
+			for (let j = 0; j < pacmanArray.length; j++) {
+				if(gap(x, pacmanArray[j].x, y, pacmanArray[j].y) < radius + pacmanArray[j].radius){
+					getNew();
+					j = -1;
+				}
+				
+			}
+		}
+		pacmanArray.push(new Pacman(x, y, radius));
   }
 };
+
+
 init();
 
 animate();
