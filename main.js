@@ -24,27 +24,27 @@ class Pacman {
     this.x = x;
     this.y = y;
     this.radius = radius;
-		this.initalStartAngle = startAngle;
+    this.initalStartAngle = startAngle;
     this.startAngle = startAngle;
     this.endAngle = endAngle;
     this.increase_velocity = increase_velocity;
   }
   draw() {
-    grid(canvas, context);
-    context.beginPath();
+		context.beginPath();
+		context.moveTo(this.x, this.y);
     context.arc(this.x, this.y, this.radius, this.startAngle, this.endAngle);
-    context.lineTo(200, 200);
     context.fillStyle = "yellow";
     context.fill();
   }
 
-  animate() {
+  update() {
+		
     if (this.startAngle < 0) {
       this.open = true;
     }
-		if(this.startAngle > this.initalStartAngle){
-			this.open = false;
-		}
+    if (this.startAngle > this.initalStartAngle) {
+      this.open = false;
+    }
     if (!this.open) {
       this.startAngle = this.startAngle - this.increase_velocity;
       this.endAngle = this.endAngle + this.increase_velocity;
@@ -57,12 +57,27 @@ class Pacman {
   }
 }
 
-let pacman = new Pacman();
+let pac = new Pacman();
+
 const animate = () => {
+	context.beginPath();
   context.clearRect(0, 0, canvas.width, canvas.height);
   background(canvas, context);
+  grid(canvas, context);
+  pacmanArray.forEach((pac) => pac.update());
   requestAnimationFrame(animate);
-  pacman.animate();
 };
+
+const generateRandom = (min, max) => Math.random() * (max - min + 1) + min;
+
+const init = () => {
+  for (let i = 0; i < 25; i++) {
+    let radius = generateRandom(10, 30);
+    let x = generateRandom(radius, canvas.width - radius);
+    let y = generateRandom(radius, canvas.height - radius);
+    pacmanArray.push(new Pacman(x, y, radius));
+  }
+};
+init();
 
 animate();
