@@ -24,6 +24,7 @@ class Pacman {
     this.x = x;
     this.y = y;
     this.radius = radius;
+		this.initalStartAngle = startAngle;
     this.startAngle = startAngle;
     this.endAngle = endAngle;
     this.increase_velocity = increase_velocity;
@@ -41,7 +42,7 @@ class Pacman {
     if (this.startAngle < 0) {
       this.open = true;
     }
-		if(this.startAngle > Math.PI * 0.2){
+		if(this.startAngle > this.initalStartAngle){
 			this.open = false;
 		}
     if (!this.open) {
