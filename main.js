@@ -42,6 +42,7 @@ class Pacman {
     context.translate(-this.x, -this.y);
 		context.beginPath();
 		context.moveTo(this.x, this.y);
+		// context.rotate(0.17);
     context.arc(this.x, this.y, this.radius, this.startAngle, this.endAngle);
     context.fillStyle = "yellow";
     context.fill();
