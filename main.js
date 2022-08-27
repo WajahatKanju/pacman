@@ -3,7 +3,7 @@ import { grid } from "./drawing.js";
 const canvas = document.getElementsByTagName("canvas")[0];
 const context = canvas.getContext("2d");
 const pacmanArray = [];
-const totalPacmans = 1;
+const totalPacmans = 35;
 
 const background = (canvas, context, color = "#000000") => {
   context.save();
@@ -12,6 +12,9 @@ const background = (canvas, context, color = "#000000") => {
   context.fill();
   context.restore();
 };
+
+const generateRandom = (min, max) => Math.random() * (max - min + 1) + min;
+
 
 class Pacman {
   constructor(
@@ -29,12 +32,15 @@ class Pacman {
     this.startAngle = startAngle;
     this.endAngle = endAngle;
     this.increase_velocity = increase_velocity;
+    this.rotationAngle = generateRandom(0, 2) * Math.PI;
   }
   draw() {
 		context.save();
+
+    context.translate(this.x, this.y);
+    context.rotate(this.rotationAngle);
+    context.translate(-this.x, -this.y);
 		context.beginPath();
-		// context.moveTo(this.x, this.y);
-    context.translate(100, 100);
 		context.moveTo(this.x, this.y);
     context.arc(this.x, this.y, this.radius, this.startAngle, this.endAngle);
     context.fillStyle = "yellow";
@@ -73,7 +79,6 @@ const animate = () => {
   requestAnimationFrame(animate);
 };
 
-const generateRandom = (min, max) => Math.random() * (max - min + 1) + min;
 const gap = (x1, x2, y1, y2) => Math.sqrt(Math.pow(x2 - x1,2) + Math.pow(y2-y1,2));
 
 const init = () => {
@@ -99,7 +104,7 @@ const init = () => {
 			}
 		}
 
-		pacmanArray.push(new Pacman(200, 200, 50));
+		pacmanArray.push(new Pacman(x, y, radius));
   }
 };
 
