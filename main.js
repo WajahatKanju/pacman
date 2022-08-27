@@ -3,6 +3,7 @@ import { grid } from "./drawing.js";
 const canvas = document.getElementsByTagName("canvas")[0];
 const context = canvas.getContext("2d");
 const pacmanArray = [];
+const totalPacmans = 1;
 
 const background = (canvas, context, color = "#000000") => {
   context.save();
@@ -32,10 +33,13 @@ class Pacman {
   draw() {
 		context.save();
 		context.beginPath();
+		// context.moveTo(this.x, this.y);
+    context.translate(100, 100);
 		context.moveTo(this.x, this.y);
     context.arc(this.x, this.y, this.radius, this.startAngle, this.endAngle);
     context.fillStyle = "yellow";
     context.fill();
+    context.restore();
   }
 
   update() {
@@ -73,7 +77,7 @@ const generateRandom = (min, max) => Math.random() * (max - min + 1) + min;
 const gap = (x1, x2, y1, y2) => Math.sqrt(Math.pow(x2 - x1,2) + Math.pow(y2-y1,2));
 
 const init = () => {
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < totalPacmans; i++) {
 		let radius;
 		let x;
 		let y;
@@ -94,7 +98,8 @@ const init = () => {
 				
 			}
 		}
-		pacmanArray.push(new Pacman(x, y, radius));
+
+		pacmanArray.push(new Pacman(200, 200, 50));
   }
 };
 
